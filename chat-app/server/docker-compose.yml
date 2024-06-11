@@ -1,0 +1,12 @@
+version: "3"
+services:
+  chatapp_mongodb:
+    image: bitnami/mongodb:latest
+    container_name: chatapp_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_ROOT_PASSWORD=chatappserveraws
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=chatappreplica
+      - MONGODB_DATABASE=chatapp

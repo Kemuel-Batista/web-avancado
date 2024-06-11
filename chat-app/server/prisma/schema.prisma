@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_DATABASE_URL")
+}
+
+model User {
+  id                    String        @id @default(uuid()) @map("_id")
+  name                  String
+  lastName              String        @map("last_name")
+  email                 String        @unique
+  password              String
+  photo                 String
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime?     @updatedAt
+  userOneRooms          Room[]        @relation("RoomUserOne")
+  userTwoRooms          Room[]        @relation("RoomUserTwo")
+  recipientChatMessages ChatMessage[] @relation("ChatMessageSender")
+  senderChatMessages    ChatMessage[] @relation("ChatMessageRecipient")
+
+  @@map("users")
+}
+
+model Room {
+  id               String    @id @default(uuid()) @map("_id")
+  participantOneId String
+  participantOne   User      @relation("RoomUserOne", fields: [participantOneId], references: [id])
+  participantTwoId String
+  participantTwo   User      @relation("RoomUserTwo", fields: [participantTwoId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? @updatedAt
+  deletedAt        DateTime?
+
+  chatMessages ChatMessage[]
+
+  @@map("rooms")
+}
+
+model ChatMessage {
+  id          String    @id @default(uuid()) @map("_id")
+  senderId    String
+  sender      User      @relation("ChatMessageSender", fields: [senderId], references: [id])
+  recipientId String
+  recipient   User      @relation("ChatMessageRecipient", fields: [recipientId], references: [id])
+  roomId      String
+  room        Room      @relation(fields: [roomId], references: [id])
+  message     String
+  createdAt   DateTime  @default(now())
+  readAt      DateTime?
+
+  @@map("chat_messages")
+}
