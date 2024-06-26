@@ -3,9 +3,11 @@ import {
   Body,
   Controller,
   Post,
+  Res,
   UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
+import { Response } from 'express'
 import { z } from 'zod'
 
 import { WrongCredentialsError } from '@/core/errors/errors/wrong-credentials-error'
@@ -21,14 +23,17 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
-@Controller('/sessions')
+@Controller('/auth/session')
 @Public()
 export class AuthenticateUserController {
   constructor(private authenticateUser: AuthenticateUserUseCase) {}
 
   @Post()
   @UsePipes(new ZodValidationPipe(authenticateBodySchema))
-  async handle(@Body() body: AuthenticateBodySchema) {
+  async handle(
+    @Body() body: AuthenticateBodySchema,
+    @Res() response: Response,
+  ) {
     const { email, password } = body
 
     const result = await this.authenticateUser.execute({
@@ -49,8 +54,15 @@ export class AuthenticateUserController {
 
     const { accessToken } = result.value
 
-    return {
-      access_token: accessToken,
-    }
+    return response
+      .cookie('nextauth_token', accessToken, {
+        expires: new Date(Date.now() + 1 * 60 * 60 * 1000), // 1 hora em milissegundos
+        httpOnly: true,
+        path: '/',
+        secure: true, // HTTPS
+        sameSite: true,
+      })
+      .status(200)
+      .send()
   }
 }

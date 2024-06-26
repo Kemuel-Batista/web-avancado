@@ -25,7 +25,7 @@ const createUserBodySchema = z.object({
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
 
-@Controller('/accounts')
+@Controller('/users')
 @Public()
 export class CreateUserController {
   constructor(private registerUser: CreateUserUseCase) {}

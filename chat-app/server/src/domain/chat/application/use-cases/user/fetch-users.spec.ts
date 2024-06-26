@@ -21,6 +21,7 @@ describe('Fetch Users Use Case', () => {
 
     const result = await sut.execute({
       page: 1,
+      requestedBy: user.id.toString(),
     })
 
     if (result.isSuccess()) {
@@ -29,6 +30,9 @@ describe('Fetch Users Use Case', () => {
   })
 
   it('should be able to fetch paginated users', async () => {
+    const user = makeUser()
+    inMemoryUsersRepository.items.push(user)
+
     for (let i = 1; i <= 22; i++) {
       const user = makeUser()
       inMemoryUsersRepository.items.push(user)
@@ -36,6 +40,7 @@ describe('Fetch Users Use Case', () => {
 
     const result = await sut.execute({
       page: 2,
+      requestedBy: user.id.toString(),
     })
 
     if (result.isSuccess()) {

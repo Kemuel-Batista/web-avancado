@@ -15,6 +15,8 @@ type PrismaRoomDetails = PrismaRoom & {
 
 export class PrismaRoomDetailsMapper {
   static toDomain(raw: PrismaRoomDetails): RoomDetails {
+    const hasMessages = raw.chatMessages.length > 0
+
     return RoomDetails.create({
       id: new UniqueEntityID(raw.id),
       participantOneId: new UniqueEntityID(raw.participantOne.id),
@@ -23,8 +25,8 @@ export class PrismaRoomDetailsMapper {
       participantTwoId: new UniqueEntityID(raw.participantTwo.id),
       participantTwoName: raw.participantTwo.name,
       participantTwoPhoto: raw.participantTwo.photo,
-      lastMessage: raw.chatMessages[0].message,
-      lastMessageDate: raw.chatMessages[0].createdAt,
+      lastMessage: hasMessages ? raw.chatMessages[0].message : '',
+      lastMessageDate: hasMessages ? raw.chatMessages[0].createdAt : new Date(),
     })
   }
 }

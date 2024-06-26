@@ -25,8 +25,12 @@ export class InMemoryUsersRepository implements UsersRepository {
     return user
   }
 
-  async findMany({ page }: PaginationParams): Promise<User[]> {
+  async findMany(
+    { page }: PaginationParams,
+    requestedBy: string,
+  ): Promise<User[]> {
     const users = this.items
+      .filter((item) => item.id.toString() !== requestedBy)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice((page - 1) * 20, page * 20)
 

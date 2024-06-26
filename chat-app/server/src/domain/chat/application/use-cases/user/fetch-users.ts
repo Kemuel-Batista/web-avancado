@@ -8,6 +8,7 @@ import { UsersRepository } from '../../repositories/users-repository'
 
 interface FetchUsersUseCaseRequest {
   page: number
+  requestedBy: string
 }
 
 type FetchUsersUseCaseResponse = Either<
@@ -23,8 +24,9 @@ export class FetchUsersUseCase {
 
   async execute({
     page,
+    requestedBy,
   }: FetchUsersUseCaseRequest): Promise<FetchUsersUseCaseResponse> {
-    const users = await this.usersRepository.findMany({ page })
+    const users = await this.usersRepository.findMany({ page }, requestedBy)
 
     return success({
       users,

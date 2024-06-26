@@ -18,9 +18,9 @@ import { ChatMessageDetailsPresenter } from '../http/presenters/chat-message-det
 import { RoomDetailsPresenter } from '../http/presenters/room-details-presenter'
 import { SocketWithAuth } from './socket-io-adapter'
 
-@WebSocketGateway({
+@WebSocketGateway(0, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:3000',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATH', 'OPTIONS', 'HEAD'],
     allowedHeaders: [

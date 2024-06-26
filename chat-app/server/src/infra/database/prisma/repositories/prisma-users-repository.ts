@@ -39,13 +39,21 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
-  async findMany({ page }: PaginationParams): Promise<User[]> {
+  async findMany(
+    { page }: PaginationParams,
+    requestedBy: string,
+  ): Promise<User[]> {
     const users = await this.prisma.user.findMany({
       orderBy: {
         createdAt: 'desc',
       },
       take: 20,
       skip: (page - 1) * 20,
+      where: {
+        id: {
+          not: requestedBy,
+        },
+      },
     })
 
     return users.map(PrismaUserMapper.toDomain)

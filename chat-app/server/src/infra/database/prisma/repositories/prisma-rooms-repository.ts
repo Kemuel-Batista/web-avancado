@@ -78,7 +78,14 @@ export class PrismaRoomsRepository implements RoomsRepository {
       take: 20,
       skip: (page - 1) * 20,
       orderBy: { createdAt: 'desc' },
+      include: {
+        participantOne: true,
+        participantTwo: true,
+        chatMessages: true,
+      },
     })
+
+    console.log(rooms)
 
     return rooms.map(PrismaRoomDetailsMapper.toDomain)
   }

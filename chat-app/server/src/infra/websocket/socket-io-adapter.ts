@@ -20,8 +20,6 @@ export class SocketIOAdapter extends IoAdapter {
   }
 
   createIOServer(port: number, options?: ServerOptions) {
-    port = this.configService.get('SOCKETIO_SERVER_PORT')
-
     this.logger.log('Configuring SocketIO server')
 
     const server: Server = super.createIOServer(port, options)
