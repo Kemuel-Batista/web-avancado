@@ -4,6 +4,7 @@ import {
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -33,7 +34,9 @@ import { SocketWithAuth } from './socket-io-adapter'
     ],
   },
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class ChatGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   private readonly logger = new Logger(ChatGateway.name)
 
   @WebSocketServer() server: Server
@@ -44,12 +47,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private sendMessage: SendMessageUseCase,
   ) {}
 
+  afterInit(): void {
+    this.logger.log('Websocket gateway initialized.')
+  }
+
   handleConnection(client: SocketWithAuth) {
-    console.log(`Client connected: ${client.id}`)
+    this.logger.log(`Client connected: ${client.id}`)
   }
 
   handleDisconnect(client: SocketWithAuth) {
-    console.log(`Client disconnected: ${client.id}`)
+    this.logger.log(`Client disconnected: ${client.id}`)
   }
 
   @SubscribeMessage('joinRoom')
@@ -57,6 +64,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: SocketWithAuth,
     @MessageBody() data: { roomId: string },
   ) {
+    this.logger.debug(`Client joined room: ${data.roomId}`)
     client.join(data.roomId)
 
     const roomResult = await this.getRoomDetailsByIdUseCase.execute({

@@ -31,7 +31,6 @@ export const queryClient = new QueryClient({
     mutations: {
       onError(error) {
         if (isAxiosError(error)) {
-          console.log(error)
           if ('message' in error.response?.data) {
             toast.error(error.response?.data.message)
           } else {

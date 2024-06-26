@@ -37,7 +37,7 @@ export function HomeView() {
       },
       {
         onSuccess: () => {
-          router.push('/chat')
+          router.push('/chats')
         },
       },
     )

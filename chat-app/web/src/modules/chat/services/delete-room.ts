@@ -4,7 +4,7 @@ import { api } from '@/lib/axios'
 import { queryClient } from '@/lib/react-query'
 
 export const DeleteRoomService = () => {
-  return useMutation<Response, unknown, unknown>({
+  return useMutation<Response, unknown, string>({
     mutationFn: async (id: string) => {
       const response = await api.delete(`/rooms/${id}`)
 

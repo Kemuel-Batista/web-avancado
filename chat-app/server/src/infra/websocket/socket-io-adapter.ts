@@ -2,6 +2,7 @@ import { INestApplicationContext, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { IoAdapter } from '@nestjs/platform-socket.io'
+import * as cookie from 'cookie'
 import { NextFunction } from 'express'
 import { Server, ServerOptions, Socket } from 'socket.io'
 
@@ -28,8 +29,8 @@ export class SocketIOAdapter extends IoAdapter {
 
     server.use(async (socket: SocketWithAuth, next: NextFunction) => {
       try {
-        const authorizationHeader = socket.handshake.headers.authorization
-        const token = authorizationHeader.split(' ')[1]
+        const cookies = cookie.parse(socket.handshake.headers.cookie || '')
+        const token = cookies.nextauth_token
 
         const jwtKey = this.configService.get('JWT_KEY')
         const payload: UserPayload = jwtService.verify(token, {

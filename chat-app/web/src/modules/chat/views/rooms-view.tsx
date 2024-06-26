@@ -1,5 +1,6 @@
 import { Label } from '@radix-ui/react-label'
-import { Trash } from 'lucide-react'
+import { setCookie } from 'cookies-next'
+import { ArrowRight, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -31,6 +32,16 @@ export function RoomsView() {
         router.push('/home')
       },
     })
+  }
+
+  async function handleNavigateToChatMessage(roomId: string) {
+    setCookie('chatapp.room', roomId, {
+      maxAge: 60 * 60 * 1,
+      path: '/',
+      sameSite: true,
+    })
+
+    router.push('/chats/messages')
   }
 
   return (
@@ -89,6 +100,17 @@ export function RoomsView() {
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                           ) : (
                             <Trash size={20} />
+                          )}
+                        </Button>
+                        <Button
+                          size="icon"
+                          disabled={isPending}
+                          onClick={() => handleNavigateToChatMessage(item.id)}
+                        >
+                          {isPending ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <ArrowRight size={20} />
                           )}
                         </Button>
                       </div>

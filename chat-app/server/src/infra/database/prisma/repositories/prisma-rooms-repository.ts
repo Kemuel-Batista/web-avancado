@@ -85,8 +85,6 @@ export class PrismaRoomsRepository implements RoomsRepository {
       },
     })
 
-    console.log(rooms)
-
     return rooms.map(PrismaRoomDetailsMapper.toDomain)
   }
 
