@@ -8,7 +8,9 @@ import { ChangeNameFormData } from '../schemas/change-name-schema'
 export const ChangeNameUserService = () => {
   return useMutation<Response, unknown, ChangeNameFormData>({
     mutationFn: async (data) => {
-      const response = await api.patch('/users/change-name', data)
+      const response = await api.patch('/users/change-name', {
+        name: data.name,
+      })
 
       return response.data
     },
