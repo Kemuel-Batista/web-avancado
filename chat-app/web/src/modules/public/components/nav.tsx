@@ -19,7 +19,7 @@ export function Nav() {
   const { user, signOut, isAuthenticated } = useAuth()
 
   function handleNavigateToLogin() {
-    router.push('/login')
+    router.push('/')
   }
 
   async function handleSignOut() {
@@ -31,18 +31,22 @@ export function Nav() {
     router.push('/chats')
   }
 
+  function handleNavigateToMyAccount() {
+    router.push('/user/my-account')
+  }
+
   return (
     <header className="sticky flex h-16 items-center gap-4 border-b bg-background px-4">
       <nav className="flex flex-row text-lg font-medium items-center gap-5 md:text-sm lg:gap-6">
         <Link
-          href="/"
+          href="/home"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <MessageCircle className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <Link
-          href="/"
+          href="/home"
           className="text-foreground transition-colors hover:text-foreground mobile:text-sm"
         >
           Chat App
@@ -68,7 +72,12 @@ export function Nav() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
+              <DropdownMenuLabel
+                onClick={handleNavigateToMyAccount}
+                className="hover:cursor-pointer"
+              >
+                Minha conta
+              </DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={handleNavigateToMyChats}
                 className="hover:cursor-pointer"

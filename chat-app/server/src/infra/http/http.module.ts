@@ -5,6 +5,7 @@ import { CreateRoomUseCase } from '@/domain/chat/application/use-cases/room/crea
 import { DeleteRoomUseCase } from '@/domain/chat/application/use-cases/room/delete-room'
 import { FetchRoomsByParticipantIdUseCase } from '@/domain/chat/application/use-cases/room/fetch-rooms-by-participant-id'
 import { AuthenticateUserUseCase } from '@/domain/chat/application/use-cases/user/authenticate-user'
+import { ChangeMyNameUseCase } from '@/domain/chat/application/use-cases/user/change-my-name'
 import { CreateUserUseCase } from '@/domain/chat/application/use-cases/user/create-user'
 import { FetchUsersUseCase } from '@/domain/chat/application/use-cases/user/fetch-users'
 import { GetMeUseCase } from '@/domain/chat/application/use-cases/user/get-me'
@@ -16,6 +17,7 @@ import { CreateRoomController } from './controllers/room/create-room.controller'
 import { DeleteRoomController } from './controllers/room/delete-room.controller'
 import { FetchRoomsByParticipantIdController } from './controllers/room/fetch-rooms-by-participant-id.controller'
 import { AuthenticateUserController } from './controllers/user/authenticate-user.controller'
+import { ChangeMyNameController } from './controllers/user/change-my-name.controller'
 import { CreateUserController } from './controllers/user/create-user.controller'
 import { FetchUsersController } from './controllers/user/fetch-users.controller'
 import { GetMeController } from './controllers/user/get-me.controller'
@@ -33,6 +35,7 @@ import { LogoutUserController } from './controllers/user/logout-user.controller'
     FetchUsersController,
     GetMeController,
     LogoutUserController,
+    ChangeMyNameController,
   ],
   providers: [
     CreateRoomUseCase,
@@ -43,6 +46,7 @@ import { LogoutUserController } from './controllers/user/logout-user.controller'
     CreateUserUseCase,
     FetchUsersUseCase,
     GetMeUseCase,
+    ChangeMyNameUseCase,
   ],
 })
 export class HttpModule {}
